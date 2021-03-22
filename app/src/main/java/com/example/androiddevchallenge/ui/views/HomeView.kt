@@ -65,6 +65,7 @@ import com.example.androiddevchallenge.R
 import com.example.androiddevchallenge.models.OtherDayModel
 import com.example.androiddevchallenge.models.WeatherModel
 import com.example.androiddevchallenge.ui.MainViewModel
+import com.example.androiddevchallenge.ui.theme.gray
 import kotlinx.coroutines.launch
 
 // Start building your app here!
@@ -244,7 +245,7 @@ fun CityView(
             Text(
                 text = city.city,
                 style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.secondaryVariant
+                color = gray
             )
             Row(
                 verticalAlignment = Alignment.Bottom
@@ -355,7 +356,7 @@ fun FavoritesView(
                 Text(
                     text = favoriteCity.value!!.city,
                     style = MaterialTheme.typography.body2,
-                    color = Color(0xFFb7bac3)
+                    color = gray
                 )
                 Row(
                     verticalAlignment = Alignment.Bottom
