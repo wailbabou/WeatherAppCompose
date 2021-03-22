@@ -24,7 +24,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -59,7 +58,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -74,7 +72,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -82,20 +79,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.models.OtherDayModel
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.models.WeatherModel
 import com.example.androiddevchallenge.ui.MainViewModel
 import com.example.androiddevchallenge.ui.theme.lightBlue
 import kotlinx.coroutines.launch
-
-val iconsDrawable = arrayListOf(
-    R.drawable.windy_cloudy_night,
-    R.drawable.sunny_foggy_color,
-    R.drawable.thunder
-)
-val degrees = arrayListOf(
-   "21°","15°","12°","31°"
-)
 
 class MainActivity : AppCompatActivity() {
     @ExperimentalMaterialApi
@@ -124,7 +113,9 @@ fun MyApp() {
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
                 MySheetView(mainVM = mainVM)
-            }, sheetPeekHeight = 0.dp
+            },
+            sheetPeekHeight = 0.dp,
+            sheetShape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
         ) {
             Scaffold(
                 bottomBar = {
@@ -271,7 +262,7 @@ fun CityView(
     ) {
         Column(
             modifier = Modifier
-                .background(Color(0xFFedf6fd))
+                .background(MaterialTheme.colors.secondary)
                 .clickable {
                     onClick(city)
                 }
@@ -382,7 +373,7 @@ fun FavoritesView(modifier: Modifier = Modifier){
         ) {
             Column(
                 modifier = Modifier
-                    .background(Color(0xFFedf6fd))
+                    .background(MaterialTheme.colors.secondary)
                     .padding(24.dp)
             ) {
                 Text(
@@ -412,7 +403,6 @@ fun FavoritesView(modifier: Modifier = Modifier){
                             contentScale = ContentScale.FillHeight
                         )
                     }
-
                 }
             }
         }
@@ -424,49 +414,42 @@ fun MySheetView(mainVM: MainViewModel){
     val selectedCity = mainVM.selectedCity.observeAsState()
     Surface(
         color = MaterialTheme.colors.background,
-        shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
     ) {
         Column(
             modifier = Modifier
-                .clip(
-                    RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
-                )
                 .padding(32.dp)
         ) {
             Text(
                 text = "Future Weather",
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.paddingFromBaseline(bottom = 8.dp)
             )
             Text (
                 text = "${selectedCity.value?.city}",
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.paddingFromBaseline(bottom = 16.dp )
             )
-            OtherDaysWeatherList()
+            OtherDaysWeatherList(mainVM)
         }
     }
 }
 
 @Composable
-fun OtherDaysWeatherList() {
+fun OtherDaysWeatherList(mainVM: MainViewModel) {
+    val selectedCity = mainVM.selectedCity.observeAsState()
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        item {
-            RowOtherDay()
-        }
-        item {
-            RowOtherDay()
-        }
-        item {
-            RowOtherDay()
+        items(selectedCity.value!!.otherDays){
+            RowOtherDay(item = it)
         }
     }
 }
 
 @Composable
-fun RowOtherDay(){
+fun RowOtherDay(item : OtherDayModel){
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -481,7 +464,7 @@ fun RowOtherDay(){
                 )
         ) {
             Image(
-                painter = painterResource(id = iconsDrawable.random()),
+                painter = painterResource(id = item.icon),
                 contentDescription = null,
                 modifier = Modifier
                     .size(80.dp)
@@ -496,12 +479,13 @@ fun RowOtherDay(){
                     border = BorderStroke(1.dp, lightBlue),
                     shape = MaterialTheme.shapes.medium
                 )
+                .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 32.dp)
                 .height(IntrinsicSize.Min),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = degrees.random(),
+                text = item.degree,
                 style = MaterialTheme.typography.body1
             )
             Spacer(Modifier.size(16.dp))
@@ -513,22 +497,24 @@ fun RowOtherDay(){
             )
             Spacer(Modifier.size(16.dp))
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(align = Alignment.Center)
             ) {
                 Text(
-                    text = "Monday",
+                    text = item.day,
                     style = MaterialTheme.typography.caption
                 )
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
                     Text(
-                        text = "17 August",
+                        text = item.date,
                         style = MaterialTheme.typography.caption
                     )
                 }
             }
         }
     }
-
 }
 
 @ExperimentalMaterialApi
@@ -540,6 +526,7 @@ fun LightPreview() {
     }
 }
 
+@ExperimentalMaterialApi
 @Preview("Dark Theme", widthDp = 360, heightDp = 640)
 @Composable
 fun DarkPreview() {
