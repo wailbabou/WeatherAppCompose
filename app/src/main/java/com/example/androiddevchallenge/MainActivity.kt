@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-
-
 @ExperimentalMaterialApi
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable

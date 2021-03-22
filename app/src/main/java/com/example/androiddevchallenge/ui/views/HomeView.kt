@@ -1,9 +1,22 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.example.androiddevchallenge.ui.views
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +32,6 @@ import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -55,14 +67,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.R
-import com.example.androiddevchallenge.models.OtherDayModel
 import com.example.androiddevchallenge.models.WeatherModel
 import com.example.androiddevchallenge.ui.MainViewModel
 import com.example.androiddevchallenge.ui.theme.gray
@@ -94,7 +104,7 @@ fun MyApp() {
             ) {
                 Column {
                     HeaderView(modifier = Modifier.padding(16.dp))
-                    CitiesListView(mainVM = mainVM){
+                    CitiesListView(mainVM = mainVM) {
                         coroutineScope.launch {
                             mainVM.setSelectedCity(it)
                             if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
@@ -115,7 +125,7 @@ fun MyApp() {
 }
 
 @Composable
-fun MyBottomApp(){
+fun MyBottomApp() {
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background
     ) {
@@ -137,7 +147,8 @@ fun MyBottomApp(){
                     )
                 },
                 icon = {
-                    Icon(nav.resource,
+                    Icon(
+                        nav.resource,
                         contentDescription = nav.title,
                         modifier = Modifier.size(18.dp)
                     )
@@ -190,7 +201,6 @@ fun HeaderView(modifier: Modifier = Modifier) {
                         .shadow(1.dp, CircleShape)
                 )
             }
-
         }
     }
 }
@@ -199,12 +209,12 @@ fun HeaderView(modifier: Modifier = Modifier) {
 fun CitiesListView(
     modifier: Modifier = Modifier,
     mainVM: MainViewModel,
-    onClick : (item: WeatherModel) -> Unit
+    onClick: (item: WeatherModel) -> Unit
 ) {
     LazyRow(
         contentPadding = PaddingValues(
             start = 16.dp,
-            end = 16.dp ,
+            end = 16.dp,
             top = 4.dp,
             bottom = 4.dp
         ),
@@ -214,7 +224,7 @@ fun CitiesListView(
         items(mainVM.items) { city ->
             CityView(
                 city = city,
-            ){
+            ) {
                 onClick(it)
             }
         }
@@ -224,8 +234,8 @@ fun CitiesListView(
 @Composable
 fun CityView(
     city: WeatherModel,
-    modifier : Modifier = Modifier,
-    onClick : (item: WeatherModel) -> Unit
+    modifier: Modifier = Modifier,
+    onClick: (item: WeatherModel) -> Unit
 ) {
     Card(
         elevation = 1.dp,
@@ -310,7 +320,7 @@ fun MoreDetailsView(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(1.dp)
-                    //.padding(horizontal = 8.dp)
+                    // .padding(horizontal = 8.dp)
                 )
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -335,7 +345,7 @@ fun MoreDetailsView(modifier: Modifier = Modifier) {
 fun FavoritesView(
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel
-){
+) {
     val favoriteCity = mainViewModel.favoriteCity.observeAsState()
     Column(modifier = modifier) {
         Text(
