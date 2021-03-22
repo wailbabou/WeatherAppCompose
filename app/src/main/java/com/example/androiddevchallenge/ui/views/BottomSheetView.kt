@@ -110,7 +110,7 @@ fun RowOtherDay(item: OtherDayModel) {
                 painter = painterResource(id = item.icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .height(80.dp)
                     .padding(16.dp)
                     .alignByBaseline(),
                 contentScale = ContentScale.FillHeight

@@ -241,7 +241,7 @@ fun CityView(
         elevation = 1.dp,
         shape = MaterialTheme.shapes.medium,
         modifier = modifier
-            .width(250.dp)
+            .width(300.dp)
     ) {
         Column(
             modifier = Modifier
@@ -264,12 +264,12 @@ fun CityView(
                     text = city.degree,
                     style = MaterialTheme.typography.h1
                 )
-                Spacer(Modifier.size(32.dp))
+                Spacer(Modifier.size(8.dp))
                 Image(
                     painter = painterResource(id = city.icon),
                     contentDescription = city.iconDesc,
                     modifier = Modifier
-                        .size(80.dp)
+                        .height(80.dp)
                         .alignByBaseline(),
                     contentScale = ContentScale.FillHeight
                 )
@@ -385,7 +385,7 @@ fun FavoritesView(
                             painter = painterResource(id = favoriteCity.value!!.icon),
                             contentDescription = favoriteCity.value!!.iconDesc,
                             modifier = Modifier
-                                .size(80.dp)
+                                .height(80.dp)
                                 .alignByBaseline(),
                             contentScale = ContentScale.FillHeight
                         )
