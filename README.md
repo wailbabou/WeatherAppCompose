@@ -16,8 +16,8 @@ Let's Compose it
 
 ## :camera_flash: Screenshots
 <!-- You can add more screenshots here if you like -->
-<img src="/results/screen_1_light.jpg" width="260">&emsp;<img src="/results/screen_2_light.jpg" width="260">
-<img src="/results/screen_1_dark.jpg" width="260">&emsp;<img src="/results/screen_2_dark.jpg" width="260">
+<img src="/results/screen_2_light.jpg" width="260">&emsp;<img src="/results/screen_1_light.jpg" width="260">
+<img src="/results/screen_2_dark.jpg" width="260">&emsp;<img src="/results/screen_1_dark.jpg" width="260">
 
 ## License
 ```
