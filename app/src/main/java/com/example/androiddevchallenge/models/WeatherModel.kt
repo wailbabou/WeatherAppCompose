@@ -13,6 +13,7 @@ val degrees = arrayListOf(
 data class WeatherModel (
     val city:String,
     val icon:Int,
+    val iconDesc : String,
     val degree:String){
     val otherDays = arrayListOf(
         OtherDayModel( iconsDrawable.random(),degrees.random(),"Monday","17 August"),

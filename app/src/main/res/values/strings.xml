@@ -10,4 +10,7 @@
       the License.
       -->
     <string name="app_name">AndroidDevChallenge</string>
+    <string name="your_favorite">Your Favorite</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="good_morning">Good Morning</string>
 </resources>
